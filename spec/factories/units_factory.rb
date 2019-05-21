@@ -3,9 +3,9 @@
 FactoryBot.define do
 
   factory :tutorial do
-    meeting_day       "Monday"
-    meeting_time      "17:30"
-    meeting_location  "ATC101"
+    meeting_day       { "Monday" }
+    meeting_time      { "17:30" }
+    meeting_location  { "ATC101" }
     sequence(:abbreviation) { |n| "LA1-#{n}" }
     unit
   end
@@ -28,21 +28,21 @@ FactoryBot.define do
 
   factory :unit do
     transient do
-      student_count 0
-      task_count 2
-      tutorials 1
-      group_sets 0
-      groups [ ] #[ { gs: 0, students:0 } ]
-      group_tasks [ ]
-      outcome_count 2
+      student_count { 0 }
+      task_count { 2 }
+      tutorials { 1 }
+      group_sets { 0 }
+      groups { [ ] } #[ { gs: 0, students:0 } ]
+      group_tasks { [ ] }
+      outcome_count { 2 }
     end
 
-    name          "A"
-    description   "Description"
-    start_date    Time.zone.now
-    end_date      Time.zone.now + 14.weeks
-    code          "COS10001"
-    active        true
+    name          { "A" }
+    description   { "Description" }
+    start_date    { Time.zone.now }
+    end_date      { Time.zone.now + 14.weeks }
+    code          { "COS10001" }
+    active        { true }
 
     after(:create) do | unit, eval |
       create_list(:tutorial, eval.tutorials, unit: unit)
