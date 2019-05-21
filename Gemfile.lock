@@ -114,8 +114,8 @@ GEM
     grape-active_model_serializers (1.4.0)
       active_model_serializers (>= 0.9.0)
       grape
-    grape-swagger (0.21.0)
-      grape (>= 0.12.0)
+    grape-swagger (0.32.1)
+      grape (>= 0.16.2)
     hashie (3.4.4)
     hirb (0.7.3)
     http-cookie (1.0.3)
