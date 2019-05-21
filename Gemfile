@@ -26,7 +26,8 @@ group :development, :test do
   gem 'better_errors'
   gem 'rails_best_practices'
   gem 'thin'
-  gem 'rubocop', '0.46.0'
+  gem 'rubocop', '~>0.70.0'
+  gem 'rubocop-performance'
 end
 
 group :development, :test, :staging do
@@ -74,7 +75,7 @@ gem 'require_all', '>=1.3.3'
 gem 'dotenv-rails'
 
 # Excel support
-gem 'roo', '~> 2.7.0'
+gem 'roo', '~> 2.8.0'
 gem 'roo-xls'
 
 gem 'rest-client', '~> 2.0'
