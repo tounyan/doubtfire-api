@@ -59,7 +59,7 @@ gem 'rubyzip'
 gem 'moss_ruby', '>= 1.1.2'
 
 # Latex
-gem 'rails-latex', '=2.0.1'
+gem 'rails-latex', '=2.3.2'
 
 # API
 gem 'grape', '~>0.19.0'
