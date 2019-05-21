@@ -15,7 +15,7 @@ gem 'rails', '4.2.6'
 
 group :development, :test do
   gem 'database_cleaner'
-  gem 'factory_bot_rails', '=4.10.0'
+  gem 'factory_bot_rails', '~>5.0.2'
   gem 'minitest-around'
   gem 'minitest-hyper'
   gem 'minitest-rails'
