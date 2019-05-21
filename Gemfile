@@ -45,7 +45,7 @@ group :production, :staging do
 end
 
 # Authentication
-gem 'devise', '~> 4.1.1'
+gem 'devise', '~> 4.1'
 gem 'devise_ldap_authenticatable'
 gem 'json-jwt', '~>1.10.0'
 
