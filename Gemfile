@@ -52,7 +52,7 @@ gem 'json-jwt', '~>1.10.0'
 # Student submission
 gem 'coderay'
 gem 'ruby-filemagic'
-gem 'rmagick', '~> 2.15' # require: false #already included in other gems - remove to avoid duplicate errors
+gem 'rmagick', '~> 3.1.0' # require: false #already included in other gems - remove to avoid duplicate errors
 gem 'rubyzip'
 
 # Plagarism detection
