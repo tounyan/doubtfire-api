@@ -80,6 +80,18 @@ module FileHelper
     dst
   end
 
+  def tmp_file_dir()
+    file_server = Doubtfire::Application.config.student_work_dir
+    dst = "#{file_server}/tmp/" # trust the server config and passed in type for paths
+    FileUtils.mkdir_p dst if !Dir.exist? dst
+
+    dst
+  end
+
+  def tmp_file(filename)
+    tmp_file_dir << sanitized_filename(filename)
+  end
+
   def student_group_work_dir(type, group_submission, task = nil, create = false)
     return nil unless group_submission
 
@@ -118,7 +130,9 @@ module FileHelper
       dst = "#{file_server}/" # trust the server config and passed in type for paths
 
       if !(type.nil? || task.nil?)
-        if type == :pdf
+        if type == :discussion
+          dst << sanitized_path("#{task.project.unit.code}-#{task.project.unit.id}", task.project.student.username.to_s, type.to_s) << '/'
+        elsif type == :pdf
           dst << sanitized_path("#{task.project.unit.code}-#{task.project.unit.id}", task.project.student.username.to_s, type.to_s) << '/'
         elsif type == :done
           dst << sanitized_path("#{task.project.unit.code}-#{task.project.unit.id}", task.project.student.username.to_s, type.to_s, task.id.to_s) << '/'
@@ -161,6 +175,14 @@ module FileHelper
 
   def comment_attachment_path(task_comment, attachment_extension)
     "#{File.join( student_work_dir(:comment, task_comment.task), "#{task_comment.id.to_s}#{attachment_extension}")}"
+  end
+
+  def comment_prompt_path(task_comment, attachment_extension, count)
+    "#{File.join( student_work_dir(:discussion, task_comment.task), "#{task_comment.id.to_s}_#{count.to_s}#{attachment_extension}")}"
+  end
+
+  def comment_reply_prompt_path(discussion_comment, attachment_extension)
+    "#{File.join( student_work_dir(:discussion, discussion_comment.task), "#{discussion_comment.id.to_s}_reply#{attachment_extension}")}"
   end
 
   def compress_image(path)
@@ -362,6 +384,10 @@ module FileHelper
     zip_file = "#{student_work_dir(:done, task, false)[0..-2]}.zip"
   end
 
+  def zip_file_path_for_discussion_prompts(task)
+    zip_file = "#{student_work_dir(:discussion, task, false)[0..-2]}.zip"
+  end
+
   #
   # Compress the done files for a student - includes cover page and work uploaded
   #
@@ -438,15 +464,24 @@ module FileHelper
     FileUtils.mv(tmp_filename, output_filename)
   end
 
+  def process_audio(input_path, output_path)
+    logger.info("Trying to process audio in FileHelper")
+    TimeoutHelper.system_try_within 20, "Failed to process audio submission - timeout", "ffmpeg -loglevel quiet -y -i #{input_path} -ac 1 -ar 16000 -sample_fmt s16 #{output_path}"
+  end
+
   # Export functions as module functions
   module_function :accept_file
   module_function :sanitized_path
   module_function :sanitized_filename
   module_function :task_file_dir_for_unit
+  module_function :tmp_file_dir
+  module_function :tmp_file
   module_function :student_group_work_dir
   module_function :student_work_dir
   module_function :student_portfolio_dir
   module_function :comment_attachment_path
+  module_function :comment_prompt_path
+  module_function :comment_reply_prompt_path
   module_function :compress_image
   module_function :compress_image_to_dest
   module_function :compress_pdf
@@ -460,9 +495,11 @@ module FileHelper
   module_function :delete_group_submission
   module_function :zip_file_path_for_group_done_task
   module_function :zip_file_path_for_done_task
+  module_function :zip_file_path_for_discussion_prompts
   module_function :compress_done_files
   module_function :move_compressed_task_to_new
   module_function :recursively_add_dir_to_zip
   module_function :write_entries_to_zip
   module_function :ensure_utf8_code
+  module_function :process_audio
 end
